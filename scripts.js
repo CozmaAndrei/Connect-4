@@ -60,7 +60,7 @@ function findAvailableCell(columnAddress) {
 
 function isWinner() {
     if(move >= 7) {
-        checkWinnerOrizontal();
+        checkWinnerHorizontal();
         checkWinnerVertical();
         checkWinnerMainDiagonal();
         checkWinnerSecondDiagonal();
@@ -73,7 +73,7 @@ function isDraw() {
     }
 }
 
-function checkWinnerOrizontal() {
+function checkWinnerHorizontal() {
     for (let i = 5; i >= 0; --i) {
         for (let j = 0; j < 4; ++j) {
             if (table[i][j] === playerOne && 
