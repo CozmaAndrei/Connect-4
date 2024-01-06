@@ -11,7 +11,7 @@ let table = [];
 let cellI;
 let cellJ;
 
-createGameGrid();
+createGameGrid();   
 
 function createGameGrid() {
     for (let i = 0; i < rows ; ++i) {
@@ -46,8 +46,12 @@ function assignedColoredCircle() {
             table[updateRowAddress][columnAddress] = playerTwo;
             ++move;
         }
-        isDraw();
-        isWinner();
+        if (move >= 7) {
+            isWinner();
+        }
+        if (move === gameCells) {
+            isDraw();
+        }
     }
 }
 
@@ -60,95 +64,67 @@ function findAvailableCell(columnAddress) {
     return -1;
 }
 
-function isDraw() {
-    if (move === gameCells) {
-        result.innerHTML = "It's draw!"
-    }
-}
-
 function isWinner() {
-    if (move >= 7) {
-        for (cellI = 0; cellI < rows; ++cellI) {
-            for (cellJ = 0; cellJ < columns; ++cellJ) {
+    for (cellI = 0; cellI < rows; ++cellI) {
+        for (cellJ = 0; cellJ < columns; ++cellJ) {
             checkWinnerHorizontal();
             checkWinnerVertical();
             checkWinnerMainDiagonal();
             checkWinnerSecondDiagonal();
-            }
         }
-        displayResult();
     }
 }
 
 function checkWinnerHorizontal() {
-    if(cellJ <= columns - 4) {
-        if (table[cellI][cellJ] === playerOne && 
-            table[cellI][cellJ + 1] === playerOne && 
-            table[cellI][cellJ + 2] === playerOne && 
-            table[cellI][cellJ + 3] === playerOne) {
-            result.innerHTML = "Player 1 is the Winner!";
-        } else if (table[cellI][cellJ] === playerTwo && 
-            table[cellI][cellJ + 1] === playerTwo && 
-            table[cellI][cellJ + 2] === playerTwo && 
-            table[cellI][cellJ + 3] === playerTwo) {
-            result.innerHTML = "Player 2 is the Winner!";
+    if(cellJ <= columns - 4 && table[cellI][cellJ] !== "") {
+        if (table[cellI][cellJ] === table[cellI][cellJ + 1] && 
+            table[cellI][cellJ] === table[cellI][cellJ + 2] &&
+            table[cellI][cellJ] === table[cellI][cellJ + 3]) {
+            result.innerHTML = `Player ${table[cellI][cellJ]} is the Winner!`;
+            gameOver = true;
+            return;
         }
     }
 }
 
 function checkWinnerVertical() {
-    if(cellI >= 3) {
-        if (table[cellI][cellJ] === playerOne && 
-            table[cellI - 1][cellJ] === playerOne && 
-            table[cellI - 2][cellJ] === playerOne && 
-            table[cellI - 3][cellJ] === playerOne) {
-            result.innerHTML = "Player 1 is the Winner!";
-        } else if (table[cellI][cellJ] === playerTwo && 
-            table[cellI - 1][cellJ] === playerTwo && 
-            table[cellI - 2][cellJ] === playerTwo && 
-            table[cellI - 3][cellJ] === playerTwo) {
-            result.innerHTML = "Player 2 is the Winner!";
+    if(cellI >= 3 && table[cellI][cellJ] !== "") {
+        if (table[cellI][cellJ] === table[cellI - 1][cellJ] && 
+            table[cellI][cellJ] === table[cellI - 2][cellJ] && 
+            table[cellI][cellJ] === table[cellI - 3][cellJ]) {
+            result.innerHTML = `Player ${table[cellI][cellJ]} is the Winner!`;
+            gameOver = true;
+            return;
         }
     }
 }
 
 function checkWinnerMainDiagonal() {
-    if (cellI >= 3 && cellJ >= 3) {
-        if (table[cellI][cellJ] === playerOne &&
-            table[cellI - 1][cellJ - 1] === playerOne &&
-            table[cellI - 2][cellJ - 2] === playerOne &&
-            table[cellI - 3][cellJ - 3] === playerOne) {
-            result.innerHTML = "Player 1 is the Winner!";
-        } else if (table[cellI][cellJ] === playerTwo &&
-            table[cellI - 1][cellJ - 1] === playerTwo &&
-            table[cellI - 2][cellJ - 2] === playerTwo &&
-            table[cellI - 3][cellJ - 3] === playerTwo) {
-            result.innerHTML = "Player 2 is the Winner!";
+    if (cellI >= 3 && cellJ >= 3 && table[cellI][cellJ] !== "") {
+        if (table[cellI][cellJ] === table[cellI - 1][cellJ - 1] &&
+            table[cellI][cellJ] === table[cellI - 2][cellJ - 2] &&
+            table[cellI][cellJ] === table[cellI - 3][cellJ - 3]) {
+            result.innerHTML = `Player ${table[cellI][cellJ]} is the Winner!`;
+            gameOver = true;
+            return;
         }
     }
 }
 
 function checkWinnerSecondDiagonal() {
-    if (cellI >= 3 && cellJ <= columns - 4) {
-        if (table[cellI][cellJ] === playerOne &&
-            table[cellI - 1][cellJ + 1] === playerOne &&
-            table[cellI - 2][cellJ + 2] === playerOne &&
-            table[cellI - 3][cellJ + 3] === playerOne) {
-            result.innerHTML = "Player 1 is the Winner!";
-        } else if (table[cellI][cellJ] === playerTwo &&
-            table[cellI - 1][cellJ + 1] === playerTwo &&
-            table[cellI - 2][cellJ + 2] === playerTwo &&
-            table[cellI - 3][cellJ + 3] === playerTwo) {
-            result.innerHTML = "Player 2 is the Winner!";
+    if (cellI >= 3 && cellJ <= columns - 4 && table[cellI][cellJ] !== "") {
+        if (table[cellI][cellJ] === table[cellI - 1][cellJ + 1] &&
+            table[cellI][cellJ] === table[cellI - 2][cellJ + 2] &&
+            table[cellI][cellJ] === table[cellI - 3][cellJ + 3]) {
+            result.innerHTML = `Player ${table[cellI][cellJ]} is the Winner!`;
+            gameOver = true;
+            return;
         }
     }
 }
 
-function displayResult() {
-    if(result.innerHTML !== "") {
-        gameOver = true; 
-    }
-    return;
+function isDraw() {
+    result.innerHTML = "It's draw!"
 }
 
 function restartGame() {
